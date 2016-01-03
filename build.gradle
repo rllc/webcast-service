@@ -1,0 +1,51 @@
+buildscript {
+    repositories {
+        mavenCentral()
+    }
+    dependencies {
+        classpath("org.springframework.boot:spring-boot-gradle-plugin:1.2.7.RELEASE")
+    }
+}
+
+apply plugin: 'application'
+apply plugin: 'groovy'
+apply plugin: 'idea'
+apply plugin: 'spring-boot'
+
+def groovyVersion = '2.4.5'
+def spockVersion = '1.0-groovy-2.4'
+
+mainClassName = "org.llc.webcast.Application"
+applicationName = "llc-webcast-service"
+
+sourceCompatibility = JavaVersion.VERSION_1_7
+version = '1.0.0'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    baseName = 'llc-webcast-service'
+    version = '1.0.0'
+}
+
+dependencies {
+
+    compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
+
+    compile("org.springframework.boot:spring-boot-starter-actuator")
+    compile("org.springframework.boot:spring-boot-autoconfigure")
+    compile("org.springframework.boot:spring-boot-starter-web")
+    compile("org.springframework.boot:spring-boot-starter-security")
+    compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+
+    compile 'org.apache.commons:commons-exec:1.3'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+    testCompile "org.spockframework:spock-core:${spockVersion}"
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.9'
+}

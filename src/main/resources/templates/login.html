@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>RLLC Webcaster</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/journal/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/login.css"/>
+</head>
+<body>
+
+<div th:replace="navbar :: header"></div>
+
+<div class="content">
+
+    <div class="wrapper">
+
+        <form class="form-signin" th:action="@{/login}" method="post">
+            <div th:if="${param.error}">
+                Invalid username and password.
+            </div>
+            <div th:if="${param.logout}">
+                You have been logged out.
+            </div>
+            <h2 class="form-signin-heading">Please login</h2>
+            <input type="text" class="form-control" name="username" placeholder="Username" required="" autofocus=""/>
+            <input type="password" class="form-control" name="password" placeholder="Password" required=""/>
+            <label class="checkbox">
+                <input type="checkbox" value="remember-me" id="rememberMe" name="rememberMe"/> Remember me
+            </label>
+            <button class="btn btn-lg btn-primary btn-block" type="submit">Login</button>
+        </form>
+    </div>
+
+</div>
+
+</body>
+</html>
