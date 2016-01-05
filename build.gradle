@@ -30,6 +30,10 @@ jar {
     version = '1.0.0'
 }
 
+bootRun {
+    systemProperties = System.properties
+}
+
 dependencies {
 
     compile "org.codehaus.groovy:groovy-all:${groovyVersion}"
