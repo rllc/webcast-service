@@ -36,9 +36,9 @@ class WebcastServiceImpl implements WebcastService {
 
         watchdog = new ExecuteWatchdog(MAX_STREAM_TIME)
         resultHandler = new StreamResultHandler(watchdog)
-        executor = new DefaultExecutor()
-        executor.exitValue = 1
-        executor.watchdog = watchdog
+        executor = new DefaultExecutor(
+                watchdog: watchdog
+        )
     }
 
     @Override
