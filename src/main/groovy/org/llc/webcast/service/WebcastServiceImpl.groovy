@@ -7,6 +7,7 @@ import org.apache.commons.exec.ExecuteWatchdog
 import org.apache.commons.exec.Executor
 import org.llc.webcast.config.FfmpegConfig
 import org.llc.webcast.domain.ApplicationState
+import org.llc.webcast.domain.DesiredState
 import org.llc.webcast.domain.OperationResponse
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.stereotype.Service
@@ -18,10 +19,11 @@ import javax.annotation.PostConstruct
  */
 @Service
 @Log
-class WebcastServiceImpl implements WebcastService {
+class WebcastServiceImpl implements WebcastService, WebcastObserver {
 
     private static final int MAX_STREAM_TIME = 4 * 60 * 60 * 1000 // 4 hours
 
+    DesiredState desiredState = DesiredState.STOPPED
     ExecuteWatchdog watchdog
     CommandLine cmdLine
     Executor executor
@@ -36,6 +38,7 @@ class WebcastServiceImpl implements WebcastService {
 
         watchdog = new ExecuteWatchdog(MAX_STREAM_TIME)
         resultHandler = new StreamResultHandler(watchdog)
+        resultHandler.webcastObservers << this
         executor = new DefaultExecutor(
                 watchdog: watchdog
         )
@@ -43,7 +46,8 @@ class WebcastServiceImpl implements WebcastService {
 
     @Override
     OperationResponse start() {
-        resultHandler.running = true
+        desiredState = DesiredState.STARTED
+        resultHandler.isRunning = true
         executor.execute(cmdLine, resultHandler)
         return new OperationResponse(
                 message: ApplicationState.STARTED.toString(),
@@ -54,6 +58,7 @@ class WebcastServiceImpl implements WebcastService {
 
     @Override
     OperationResponse stop() {
+        desiredState = DesiredState.STOPPED
         watchdog.destroyProcess()
 
         return new OperationResponse(
@@ -78,5 +83,27 @@ class WebcastServiceImpl implements WebcastService {
                 state: state,
                 success: true
         )
+    }
+
+    @Override
+    void update(ApplicationState applicationState) {
+        log.info "update application state : $applicationState"
+        switch (applicationState) {
+            case ApplicationState.STARTED:
+                if (desiredState == DesiredState.STOPPED) {
+                    log.info "stopping services.."
+                    stop()
+                }
+                break
+            case ApplicationState.STOPPED:
+            case ApplicationState.ERROR:
+                if (desiredState == DesiredState.STARTED) {
+                    log.info "restarting services.."
+                    start()
+                }
+                break
+            case ApplicationState.UNKNOWN:
+                break
+        }
     }
 }
