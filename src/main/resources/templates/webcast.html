@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>RLLC Webcaster</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootswatch/3.3.5/journal/bootstrap.min.css"/>
+    <link rel="stylesheet" href="css/app.css"/>
+
+    <script src="webjars/jquery/2.2.0/jquery.min.js"></script>
+    <script src="js/webcast.js"></script>
+</head>
+<body>
+
+<div th:replace="navbar :: header"></div>
+
+<div class="container">
+
+    <div class="row stream-button-row">
+        <button type="button" class="btn btn-info stream-button" id="stream-button">START</button>
+    </div>
+    <div class="row">
+        <div class="well status-block text-center stream-status" id="stream-status">
+            <span class="status" id="stream-status-text">
+                STATUS
+            </span>
+        </div>
+    </div>
+</div>
+</body>
+</html>

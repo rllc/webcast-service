@@ -43,6 +43,8 @@ dependencies {
     compile("org.springframework.boot:spring-boot-starter-web")
     compile("org.springframework.boot:spring-boot-starter-security")
     compile("org.springframework.boot:spring-boot-starter-thymeleaf")
+    compile('org.thymeleaf.extras:thymeleaf-extras-springsecurity4:2.1.2.RELEASE')
+    compile('org.webjars:jquery:2.2.0')
 
     compile 'org.apache.commons:commons-exec:1.3'
 
