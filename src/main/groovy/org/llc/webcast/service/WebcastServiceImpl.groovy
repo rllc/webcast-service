@@ -59,8 +59,9 @@ class WebcastServiceImpl implements WebcastService, WebcastObserver {
     @Override
     OperationResponse stop() {
         desiredState = DesiredState.STOPPED
-        watchdog.destroyProcess()
-
+        if (resultHandler.isRunning) {
+            watchdog.destroyProcess()
+        }
         return new OperationResponse(
                 message: ApplicationState.STOPPED.toString(),
                 state: ApplicationState.STOPPED,
@@ -88,22 +89,22 @@ class WebcastServiceImpl implements WebcastService, WebcastObserver {
     @Override
     void update(ApplicationState applicationState) {
         log.info "update application state : $applicationState"
-        switch (applicationState) {
-            case ApplicationState.STARTED:
-                if (desiredState == DesiredState.STOPPED) {
-                    log.info "stopping services.."
-                    stop()
-                }
-                break
-            case ApplicationState.STOPPED:
-            case ApplicationState.ERROR:
-                if (desiredState == DesiredState.STARTED) {
-                    log.info "restarting services.."
-                    start()
-                }
-                break
-            case ApplicationState.UNKNOWN:
-                break
-        }
+//        switch (applicationState) {
+//            case ApplicationState.STARTED:
+//                if (desiredState == DesiredState.STOPPED) {
+//                    log.info "stopping services.."
+//                    stop()
+//                }
+//                break
+//            case ApplicationState.STOPPED:
+//            case ApplicationState.ERROR:
+//                if (desiredState == DesiredState.STARTED) {
+//                    log.info "restarting services.."
+//                    start()
+//                }
+//                break
+//            case ApplicationState.UNKNOWN:
+//                break
+//        }
     }
 }
