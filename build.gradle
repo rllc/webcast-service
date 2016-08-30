@@ -19,7 +19,7 @@ def spockVersion = '1.0-groovy-2.4'
 mainClassName = "org.llc.webcast.Application"
 applicationName = "llc-webcast-service"
 
-sourceCompatibility = JavaVersion.VERSION_1_8
+sourceCompatibility = JavaVersion.VERSION_1_7
 version = '1.0.0'
 
 repositories {

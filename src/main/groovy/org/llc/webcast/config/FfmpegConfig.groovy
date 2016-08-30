@@ -31,6 +31,7 @@ class FfmpegConfig {
         sb << "-re -f $inputFormat "
         sb << "-i $input "
         sb << "-g $gop "
+        sb << "-map_channel 0.0.0 "
         if (enableExperimental) {
             sb << "-strict experimental "
         }
